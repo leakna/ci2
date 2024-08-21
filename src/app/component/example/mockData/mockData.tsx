@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-
 // Example hook to retrieve data from an external endpoint
 function useFetchData() {
-  const [status, setStatus] = useState<string>('idle');
+  const [status, setStatus] = useState('idle');
   const [data, setData] = useState<any[]>([]);
   useEffect(() => {
     setStatus('loading');
@@ -12,9 +11,8 @@ function useFetchData() {
         if (!res.ok) {
           throw new Error(res.statusText);
         }
-        return res;
+        return res.json();
       })
-      .then((res) => res.json())
       .then((data) => {
         setStatus('success');
         setData(data);
@@ -33,7 +31,8 @@ function useFetchData() {
 export function DocumentScreen() {
   const { status, data } = useFetchData();
 
-  const {user} = data[0];
+  // Ensure data is an array and has at least one item
+  const user = data.length > 0 ? data[0].user : null;
 
   if (status === 'loading') {
     return <p>Loading...</p>;
@@ -41,11 +40,17 @@ export function DocumentScreen() {
   if (status === 'error') {
     return <p>There was an error fetching the data!</p>;
   }
+  if (!user || user.length === 0) {
+    return <p>No user data available.</p>;
+  }
+
   return (
     <>
-     <p>
-      {user.gmail}
-     </p>
+      <p>Email: {user[0].gmail}</p>
+      <p>Name: {user[0].name}</p>
+      <p>Age: {user[0].age}</p>
+      <p>Status: {user[0].status}</p>
     </>
   );
 }
+

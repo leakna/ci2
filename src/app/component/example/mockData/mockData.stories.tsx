@@ -15,17 +15,18 @@ export default meta;
 type Story = StoryObj<typeof DocumentScreen>;
 
 // 👇 The mocked data that will be used in the story
-const TestData = {
-  user:[
-    {
-      gmail:'leakna@gmail.com',
-      name:'John Doe',
-      age:30,
-      status:'approved'
-    }
-  ]
-  
-};
+const TestData = [
+  {
+    user: [
+      {
+        gmail: 'leakna@gmail.com',
+        name: 'John Doe',
+        age: 30,
+        status: 'approved',
+      },
+    ],
+  },
+];
 
 export const MockedSuccess: Story = {
   parameters: {

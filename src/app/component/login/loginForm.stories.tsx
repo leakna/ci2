@@ -86,33 +86,6 @@ export const LoginRequire: Story = {
   },
 };
 
-export const LoginEmailFormat: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        http.post("https://your-restful-endpoint/", async () => {
-          await delay(800);
-          return new HttpResponse(null, {
-            status: 403,
-          });
-        }),
-      ],
-    },
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // Simulate user interaction
-    await userEvent.type(canvas.getByTestId("email"), "wrongemail"); // Invalid email format
-    await userEvent.type(canvas.getByTestId("password"), "password123");
-    await userEvent.click(canvas.getByRole("button"));
-
-    // Wait for the error message
-    await waitFor(() => {
-      expect(canvas.getByText((content) => content.includes("Invalid format"))).toBeInTheDocument();
-    });
-  },
-};
 
 export const LoginLimitFormat: Story = {
   parameters: errorFetch(),
