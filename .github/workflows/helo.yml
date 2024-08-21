@@ -26,13 +26,13 @@ jobs:
         run: yarn playwright install
 
       - name: Start Storybook
-        run: yarn storybook --ci --port 3000 &
+        run: yarn storybook --ci --port 6006 &
 
       - name: Wait for Storybook to be available
-        run: npx wait-on http://127.0.0.1:3000
+        run: npx wait-on http://127.0.0.1:6006
 
       - name: Run tests with coverage
-        run: yarn test-storybook --coverage --storybook-port 3000
+        run: yarn test-storybook --coverage
 
       - name: Check coverage threshold
         run: |
@@ -45,17 +45,7 @@ jobs:
           fi
 
       - name: Stop Storybook
-        run: kill $(lsof -t -i:3000)
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          verbose: true
-
+        run: kill $(lsof -t -i:6006)
 
   deploy:
     runs-on: ubuntu-latest
