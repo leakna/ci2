@@ -32,7 +32,7 @@ jobs:
         run: npx wait-on http://127.0.0.1:3000
 
       - name: Run tests with coverage
-        run: yarn test-storybook --coverage-port 3000
+        run: yarn test-storybook --coverage --storybook-port 3000
 
       - name: Check coverage threshold
         run: |
