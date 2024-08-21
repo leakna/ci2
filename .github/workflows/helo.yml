@@ -32,7 +32,7 @@ jobs:
         run: npx wait-on http://127.0.0.1:3000
 
       - name: Run tests with coverage
-        run: yarn test-storybook --coverage
+        run: yarn test-storybook --coverage-port 3000
 
       - name: Check coverage threshold
         run: |
@@ -46,6 +46,16 @@ jobs:
 
       - name: Stop Storybook
         run: kill $(lsof -t -i:3000)
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+
 
   deploy:
     runs-on: ubuntu-latest
