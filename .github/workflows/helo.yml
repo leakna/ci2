@@ -25,6 +25,7 @@ jobs:
       - name: Install Playwright browsers
         run: yarn playwright install
 
+
       - name: Start Storybook
         run: yarn storybook --ci --port 6006 &
 
@@ -43,6 +44,15 @@ jobs:
           else
             echo "Passed"
           fi
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
 
       - name: Stop Storybook
         run: kill $(lsof -t -i:6006)
